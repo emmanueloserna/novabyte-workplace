@@ -128,7 +128,7 @@ const media=$("#media"), imgs={}, VQ=[];
 SLIDES.forEach(s=>{
   if(!imgs[s.bg]){ const im=new Image(); im.src=S+s.bg+".jpg"; im.alt=""; media.appendChild(im); imgs[s.bg]=im; }
   if(s.via){ const v=document.createElement("video"); v.muted=true; v.playsInline=true; v.preload="auto"; VQ.push([v,s.via]);
-    v.addEventListener("loadeddata",()=>s.vid=v,{once:true}); media.appendChild(v); }
+    s.ready=new Promise(r=>v.addEventListener("loadeddata",()=>{s.vid=v;r(v)},{once:true})); media.appendChild(v); }
   const el=document.createElement("section"); el.className="slide";
   el.innerHTML=`<div class="top"><div class="kicker">${s.kicker}</div><h1 class="title">${words(s.title)}</h1></div>
     ${s.week?weekHTML():""}
@@ -167,19 +167,33 @@ function showImg(s, how){
   if(!RM) kb=gsap.to(im,{scale:1.07,duration:14,ease:"sine.inOut",yoyo:true,repeat:-1,delay:.9});
 }
 function enter(s){ SLIDES.forEach(x=>x.el.classList.toggle("on",x===s)); textIn(s); }
-function go(n){
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const decoded=im=>im.decode?im.decode().catch(()=>{}):Promise.resolve();
+let nav=0;
+async function go(n){
   if(n<0||n>=SLIDES.length||n===cur) return;
-  const prev=SLIDES[cur], s=SLIDES[n], fwd=n>cur;
+  const prev=SLIDES[cur], s=SLIDES[n], fwd=n>cur, id=++nav;
   if(pending){ pending(); pending=null; }
   media.querySelectorAll("video").forEach(v=>{ v.pause(); gsap.killTweensOf(v); gsap.set(v,{opacity:0}); });
   cur=n;
   $("#count").textContent=`${pad(n+1)} / ${SLIDES.length}`; $("#speaker").textContent=SPEAKERS[s.sp];
   gsap.to("#bar",{width:((n+1)/SLIDES.length*100)+"%",duration:.6});
   SLIDES.forEach(x=>x.el.classList.remove("on"));
-  if(fwd && s.vid && !RM){
-    const v=s.vid; v.currentTime=0; v.play().catch(()=>{});
+  const useVid = fwd && s.via && !RM;
+  if(useVid && !s.vid){            // video still downloading: wait for it (max 10 s), then fall back
+    const ld=$("#load"); gsap.set(ld,{opacity:1}); ld.dataset.wait=1;
+    await Promise.race([s.ready, wait(10000)]);
+    delete ld.dataset.wait; if(ld.textContent==="READY") gsap.to(ld,{opacity:0,duration:.4});
+    if(id!==nav) return;           // user moved on meanwhile
+  }
+  await decoded(imgs[s.bg]);       // landing image ready before the cut (no black flash)
+  if(id!==nav) return;
+  if(useVid && s.vid){
+    const v=s.vid; v.currentTime=0;
+    try{ await v.play(); }catch(e){}
+    if(id!==nav){ v.pause(); return; }
     gsap.to(v,{opacity:1,duration:.3});
-    const land=()=>{ cleanup(); showImg(s,"cut"); gsap.to(v,{opacity:0,duration:.6}); enter(s); };
+    const land=()=>{ cleanup(); if(id!==nav) return; showImg(s,"cut"); gsap.to(v,{opacity:0,duration:.6}); enter(s); };
     const cleanup=()=>v.removeEventListener("ended",land);
     v.addEventListener("ended",land); pending=cleanup;
   } else {
@@ -206,9 +220,13 @@ addEventListener("touchend",e=>{if(tx===null)return;const d=e.changedTouches[0].
       v.src=URL.createObjectURL(new Blob(parts,{type:"video/mp4"}));
     }catch(e){ v.src=url; }
   }));
-  ld.textContent="READY"; gsap.to(ld,{opacity:0,delay:1.2,duration:.6});
+  ld.textContent="READY"; if(!ld.dataset.wait) gsap.to(ld,{opacity:0,delay:1.2,duration:.6});
 })();
-document.fonts.ready.then(()=>go(Math.min(parseInt(location.hash.slice(1))||0,SLIDES.length-1)));
+(async()=>{                       // start only when fonts + first image are ready
+  const n=Math.min(parseInt(location.hash.slice(1))||0,SLIDES.length-1);
+  await Promise.all([document.fonts.ready, decoded(imgs[SLIDES[n].bg])]);
+  go(n);
+})();
 </script>
 </body>
 </html>
