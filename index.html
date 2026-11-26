@@ -18,41 +18,47 @@ html,body{height:100%;background:var(--ink);overflow:hidden;color:#fff;font-fami
 #media img,#media video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;will-change:transform,opacity,filter}
 #media video{z-index:2}
 #shade{position:fixed;inset:0;z-index:3;pointer-events:none;
-  background:linear-gradient(180deg,rgba(0,0,0,.62) 0%,rgba(0,0,0,.18) 30%,rgba(0,0,0,0) 48%,rgba(0,0,0,.25) 64%,rgba(0,0,0,.82) 100%)}
+  background:linear-gradient(180deg,rgba(0,0,0,.72) 0%,rgba(0,0,0,.18) 30%,rgba(0,0,0,0) 48%,rgba(0,0,0,.25) 64%,rgba(0,0,0,.82) 100%)}
 #vignette{position:fixed;inset:0;z-index:3;pointer-events:none;box-shadow:inset 0 0 22vmin rgba(0,0,0,.55)}
 
 /* TikTok layout: big centered title on top, three columns at the bottom */
 .slide{position:fixed;inset:0;z-index:5;display:none;pointer-events:none}
 .slide.on{display:block}
 .top{position:absolute;top:6.5vh;left:0;right:0;text-align:center;padding:0 4vw}
-.kicker{font-family:"Mono",monospace;font-size:clamp(11px,.95vw,15px);letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:1.6vh}
+.kicker{font-family:"Mono",monospace;font-size:clamp(13px,1.1vw,18px);text-shadow:0 1px 14px rgba(0,0,0,.85),0 0 2px rgba(0,0,0,.6);letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:1.6vh}
 .title{font-family:"Anton",Impact,sans-serif;font-weight:400;text-transform:uppercase;line-height:.95;letter-spacing:.01em;
   font-size:clamp(44px,7.4vw,132px);text-shadow:0 4px 40px rgba(0,0,0,.45)}
 .title .w{display:inline-block;overflow:hidden;vertical-align:top;padding:0 .02em}
 .title .w>span{display:inline-block}
 .bottom{position:absolute;left:0;right:0;bottom:7vh;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3.2vw;padding:0 6vw;max-width:1500px;margin:0 auto}
 .col{border-top:2px solid rgba(255,255,255,.85);padding-top:1.5vh}
-.col .lbl{font-family:"Mono",monospace;font-size:clamp(10px,.8vw,13px);letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.72);margin-bottom:1vh}
-.col .txt{font-weight:600;font-size:clamp(16px,1.55vw,27px);line-height:1.3;text-shadow:0 2px 18px rgba(0,0,0,.6)}
+.col .lbl{font-family:"Mono",monospace;font-size:clamp(12px,.95vw,16px);letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.85);margin-bottom:1vh}
+.col .txt{font-weight:600;font-size:clamp(20px,1.95vw,36px);line-height:1.25;text-shadow:0 2px 18px rgba(0,0,0,.7),0 0 3px rgba(0,0,0,.5)}
 .col .big{font-family:"Anton",sans-serif;font-size:clamp(34px,3.6vw,64px);line-height:1;color:var(--gold);margin-bottom:.6vh}
 .p{color:var(--gold);white-space:nowrap}
 
 /* schedule */
 .week{position:absolute;left:50%;top:50%;transform:translate(-50%,-44%);width:min(1080px,84vw);
-  display:grid;grid-template-columns:56px repeat(5,1fr);grid-template-rows:34px repeat(10,minmax(0,1fr));height:min(46vh,430px);
+  display:grid;grid-template-columns:64px repeat(5,1fr);grid-template-rows:38px repeat(10,minmax(0,1fr));height:min(50vh,500px);
   background:rgba(5,6,8,.55);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.18);border-radius:6px;padding:10px 14px 12px}
-.week .d{grid-row:1;font-family:"Mono",monospace;font-size:12px;letter-spacing:.2em;color:rgba(255,255,255,.7);padding-left:6px;align-self:center}
-.week .h{grid-column:1;font-family:"Mono",monospace;font-size:11px;color:rgba(255,255,255,.5);border-top:1px solid rgba(255,255,255,.1);padding-top:2px}
+.week .d{grid-row:1;font-family:"Mono",monospace;font-size:15px;letter-spacing:.2em;color:rgba(255,255,255,.9);padding-left:6px;align-self:center}
+.week .h{grid-column:1;font-family:"Mono",monospace;font-size:13px;color:rgba(255,255,255,.72);border-top:1px solid rgba(255,255,255,.1);padding-top:2px}
 .week .c{border-top:1px solid rgba(255,255,255,.1);border-left:1px solid rgba(255,255,255,.1)}
-.ev{margin:2px 4px;border-radius:3px;padding:4px 8px;font-family:"Mono",monospace;font-size:clamp(9px,.72vw,12px);font-weight:700;letter-spacing:.04em;text-transform:uppercase;line-height:1.2;z-index:1;overflow:hidden}
-.ev small{display:block;font-weight:400;opacity:.8}
+.ev{margin:2px 4px;border-radius:3px;padding:3px 8px;font-family:"Mono",monospace;font-size:clamp(12px,.95vw,16px);font-weight:700;letter-spacing:.03em;text-transform:uppercase;line-height:1.12;z-index:1;overflow:hidden}
+.ev small{display:block;font-weight:400;opacity:.85;font-size:.82em}
+/* schedule slides: title, grid and sentences stacked so nothing overlaps */
+.slide.wk.on{display:flex;flex-direction:column;padding:6vh 0 7vh}
+.slide.wk .top,.slide.wk .bottom{position:static}
+.slide.wk .title{font-size:clamp(40px,5.4vw,96px)}
+.slide.wk .week{position:static;transform:none;flex:1;min-height:0;height:auto;margin:2.4vh auto 3.4vh}
+.slide.wk .bottom{width:100%}
 .ev.g{background:var(--gold);color:#111}.ev.w{background:#fff;color:#111}.ev.o{border:1.5px dashed rgba(255,255,255,.75)}.ev.r{background:#ff4d3d;color:#fff}
 
-.hud{position:fixed;z-index:8;font-family:"Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.75)}
+.hud{position:fixed;z-index:8;font-family:"Mono",monospace;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.88);text-shadow:0 1px 8px rgba(0,0,0,.8)}
 #brand{top:2.6vh;left:3vw}#brand b{color:var(--gold)}
 #count{top:2.6vh;right:3vw}
-#speaker{bottom:2.2vh;left:3vw}
-#hint{bottom:2.2vh;right:3vw;opacity:.55}
+#speaker{bottom:2.2vh;left:3vw;color:#fff}
+#hint{bottom:2.2vh;right:3vw;opacity:.75}
 #bar{position:fixed;z-index:8;left:0;bottom:0;height:3px;background:var(--gold);width:0}
 
 @media (max-width:760px){
@@ -61,11 +67,23 @@ html,body{height:100%;background:var(--ink);overflow:hidden;color:#fff;font-fami
   .week{width:94vw;height:40vh;padding:6px}
   #hint{display:none}
 }
+@media (max-height:520px){            /* phones in landscape: room for the schedule */
+  .top{top:9vh}.slide.wk.on{padding-top:9vh}.slide.wk .week{margin:1.5vh auto 2vh}.title{font-size:clamp(34px,6.4vw,80px)}
+  .bottom{bottom:6vh}.col .txt{font-size:clamp(15px,1.9vw,20px)}
+  .week{height:52vh;transform:translate(-50%,-50%);grid-template-rows:24px repeat(10,minmax(0,1fr));padding:6px 10px}
+  .week .h{font-size:11px;padding-top:0}.week .d{font-size:12px}
+  .ev{font-size:11px;padding:0 5px;margin:0 3px;line-height:1;white-space:nowrap;text-overflow:ellipsis;display:flex;align-items:center}.ev small{display:none}
+  .ev.o{border-width:1px}
+}
+@media (min-height:521px) and (max-height:860px){   /* laptops/projectors 768-860 px tall: place on the same line */
+  .ev{white-space:nowrap;text-overflow:ellipsis;display:flex;align-items:center;gap:.6em;padding:0 8px}
+  .ev small{display:inline;overflow:hidden;text-overflow:ellipsis}
+}
 </style>
 </head>
 <body>
 <div id="media"></div>
-<div id="load" style="position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:50;font:700 10px Mono,monospace;letter-spacing:.2em;color:#ffc83d;pointer-events:none">LOADING VIDEO 0%</div>
+<div id="load" style="position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:50;font:700 12px Mono,monospace;letter-spacing:.2em;color:#ffc83d;text-shadow:0 1px 8px #000;pointer-events:none">LOADING VIDEO 0%</div>
 <div id="shade"></div><div id="vignette"></div>
 <main id="slides"></main>
 <div class="hud" id="brand"><b>■</b> NovaByte · Orientation</div>
@@ -108,7 +126,7 @@ const SLIDES = [
   {sp:4, bg:"00-intro-first", dim:true, week:true, kicker:"Part 2 · Our weekly schedule", title:"A week at NovaByte",
    cols:[{lbl:"Rule",txt:"No phones [during] the training, please!"},{lbl:"Thursday",txt:"Code review is [before] lunch."},{lbl:"Friday",txt:"We work [until] 6 p.m. [After] the deadline, we play video games!"}]},
   {sp:4, bg:"01-reception", kicker:"See you on Monday at 9 a.m.", title:"Welcome to the team!",
-   cols:[{big:"?",lbl:"Questions",txt:"Any questions?"},{big:"9:00",lbl:"Monday",txt:"Your first team meeting [at] 9 a.m."},{big:"☕",lbl:"Before that",txt:"Coffee [in] the Staff Room."}]}
+   cols:[{big:"?",lbl:"Questions",txt:"Any questions?"},{big:"9:00",lbl:"Monday",txt:"Your first team meeting [at] 9 a.m."},{big:"Coffee",lbl:"Before that",txt:"Coffee [in] the Staff Room."}]}
 ];
 const EVENTS = [[0,9,10,"Team meeting","Boss Cabin","g"],[1,14,16,"Coding training","Workstation Hall","w"],
   [3,11,12,"Code review","Centre Head","w"],[4,16,17,"Deadline","Before 5 p.m.","r"],[4,17,18,"Video games","After the deadline","g"],
@@ -129,7 +147,7 @@ SLIDES.forEach(s=>{
   if(!imgs[s.bg]){ const im=new Image(); im.src=S+s.bg+".jpg"; im.alt=""; media.appendChild(im); imgs[s.bg]=im; }
   if(s.via){ const v=document.createElement("video"); v.muted=true; v.playsInline=true; v.preload="auto"; VQ.push([v,s.via]);
     s.ready=new Promise(r=>v.addEventListener("loadeddata",()=>{s.vid=v;r(v)},{once:true})); media.appendChild(v); }
-  const el=document.createElement("section"); el.className="slide";
+  const el=document.createElement("section"); el.className="slide"+(s.week?" wk":"");
   el.innerHTML=`<div class="top"><div class="kicker">${s.kicker}</div><h1 class="title">${words(s.title)}</h1></div>
     ${s.week?weekHTML():""}
     <div class="bottom">${s.cols.map(c=>`<div class="col">${c.big?`<div class="big">${c.big}</div>`:""}<div class="lbl">${c.lbl}</div><div class="txt">${fmt(c.txt)}</div></div>`).join("")}</div>`;
@@ -179,7 +197,7 @@ async function go(n){
   $("#count").textContent=`${pad(n+1)} / ${SLIDES.length}`; $("#speaker").textContent=SPEAKERS[s.sp];
   gsap.to("#bar",{width:((n+1)/SLIDES.length*100)+"%",duration:.6});
   SLIDES.forEach(x=>x.el.classList.remove("on"));
-  const useVid = fwd && s.via && !RM;
+  const useVid = fwd && prev && s.via && !RM;
   if(useVid && !s.vid){            // video still downloading: wait for it (max 10 s), then fall back
     const ld=$("#load"); gsap.set(ld,{opacity:1}); ld.dataset.wait=1;
     await Promise.race([s.ready, wait(10000)]);
